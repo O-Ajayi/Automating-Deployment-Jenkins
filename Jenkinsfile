@@ -5,14 +5,18 @@ pipeline {
         booleanParam(name: 'executeTests', defaultValue: true, description: '')
     }
     stages {
-        stage("checkout") {
+        stage("init") {
             steps {
-                echo 'Checkout the scm server for codes'
+                script {
+                   gv = load "script.groovy" 
+                }
             }
         }
         stage("build") {
             steps {
-                echo 'Building the application'
+                script {
+                    gv.buildApp()
+                }
             }
         }
         stage("test") {
@@ -22,20 +26,20 @@ pipeline {
                 }
             }
             steps {
-                echo 'Testing the application'
+                script {
+                    gv.testApp()
+                }
             }
         }
         stage("deploy") {
             steps {
-                echo 'Deploying the application'
-                echo "Deploying version ${params.VERSION}"
+                script {
+                    gv.deployApp()
+                }
             }
         }
     }   
 }
-
-
-
 
 
 
@@ -52,18 +56,14 @@ pipeline {
 //         booleanParam(name: 'executeTests', defaultValue: true, description: '')
 //     }
 //     stages {
-//         stage("init") {
+//         stage("checkout") {
 //             steps {
-//                 script {
-//                    gv = load "script.groovy" 
-//                 }
+//                 echo 'Checkout the scm server for codes'
 //             }
 //         }
 //         stage("build") {
 //             steps {
-//                 script {
-//                     gv.buildApp()
-//                 }
+//                 echo 'Building the application'
 //             }
 //         }
 //         stage("test") {
@@ -73,17 +73,26 @@ pipeline {
 //                 }
 //             }
 //             steps {
-//                 script {
-//                     gv.testApp()
-//                 }
+//                 echo 'Testing the application'
 //             }
 //         }
 //         stage("deploy") {
 //             steps {
-//                 script {
-//                     gv.deployApp()
-//                 }
+//                 echo 'Deploying the application'
+//                 echo "Deploying version ${params.VERSION}"
 //             }
 //         }
 //     }   
 // }
+
+
+
+
+
+
+
+
+
+
+
+
